@@ -1,6 +1,6 @@
 /************************************************************************* 
 # File Name: graph_utils.h
-# Author: 
+# Author: steven xu
 # Mail: @.com
 # Created Time: Tue 05 Dec 2017 06:33:13 PM CST
  ************************************************************************/
@@ -38,15 +38,16 @@ template <class T> bool GeneratePaths (
     const std::vector<sNode<T>>& nodes,
     std::vector<std::vector<const sNode<T>*>>& paths) {
     std::unordered_map<int, std::vector<const sNode<T>*>> begin2node;
-    int eos = -1;
+    int eos = INT_MIN;
+    int start = INT_MAX;
     for (const auto& node : nodes) {
         begin2node[node.begin].push_back(&node);
         eos = (eos < node.end ? node.end : eos);
+        start = (start > node.begin ? node.begin : start);
     }
     // the node and its path, (the index in the paths)
     std::queue<std::pair<const sNode<T>*, size_t>> queue;
-    int begin = 0;
-    auto iter = begin2node.find(begin);
+    auto iter = begin2node.find(start);
     if (iter == begin2node.end()) {
         return false;
     }
